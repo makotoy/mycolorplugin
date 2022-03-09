@@ -1,0 +1,153 @@
+/*
+A Core Image filter that changes saturation and lightness of colors in particular hue range.
+It can run as a non-executable filter.
+Input:
+  sampler image: source sampler
+  float redmid, .., redmagentamid: 0.0 <= value <= 1.0, input middle points of these hues are converted to these values
+Output:
+  vec4: output color
+
+What it does:
+  Transforms colors by moving the middle saturation (saturation = 0.5) of particular hue to the values specified by input parameters. We interpolate parameters linearly to compute the effect on colors in between.
+*/
+kernel vec4 coreImageKernel(sampler image, float redmid, float orangemid, float yellowmid, float greenyellowmid, float greenmid, float greencyanmid, float cyanmid, float bluecyanmid, float bluemid, float bluemagentamid, float magentamid, float redmagentamid)
+{
+  vec4 rescol4;
+  float huedeg, hue6, hue, segment, shift, lum, sat, lumdiff;
+  float thish, newsat, newlum, newr, newg, newb, p, q, huedev, satfac, lumfac;
+
+  // get source color
+  vec4 col4 = unpremultiply(sample(image, samplerCoord(image)));
+  float r = col4.r;
+  float g = col4.g;
+  float b = col4.b;
+
+  // compute chroma
+  float maxrgb = max(max(r, g), b);
+  float minrgb = min(min(r, g), b);
+  float c = maxrgb - minrgb;
+
+  // get HSL
+  // ref: https://stackoverflow.com/questions/39118528/rgb-to-hsl-conversion
+  if (c == 0) {
+  // if chroma is zero, do nothing and return
+    return premultiply(col4);
+  } else {
+    lum = (maxrgb + minrgb) / 2;
+    lumdiff = maxrgb - minrgb;
+    sat = lum > 0.5 ? lumdiff / (2 - maxrgb - minrgb) : lumdiff / (maxrgb + minrgb);
+    if (maxrgb == r) {
+      segment = (g - b) / c;
+      shift   = 0 / 60;
+      if (segment < 0) {
+        shift = 360 / 60;
+      }
+      hue6 = segment + shift;
+    } else if (maxrgb == g) {
+      segment = (b - r) / c;
+      shift   = 120 / 60;
+      hue6 = segment + shift;
+    } else {
+      segment = (r - g) / c;
+      shift   = 240 / 60;
+      hue6 = segment + shift;
+    }
+  }
+  float hue12 = hue6 * 2; // hue value in range 0.0 - 12.0
+  hue = hue6 / 6;
+  float hueras = hue12 - floor(hue12);
+  float closesthue = floor(hue12);
+  if (hueras < 0.5) {
+    huedev = hueras / 12;
+  } else {
+    huedev = (1 - hueras) / 12;
+    closesthue = closesthue + 1;
+    if (closesthue == 12) closesthue = 0;
+  }
+  // transform the lightness
+  float thissatmid;
+  if (closesthue == 0) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * redmid + hueras * orangemid : (1 - hueras) * redmagentamid + hueras * redmid;
+  } else if (closesthue == 1) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * orangemid + hueras * yellowmid : (1 - hueras) * redmid + hueras * orangemid;
+  } else if (closesthue == 2) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * yellowmid + hueras * greenyellowmid : (1 - hueras) * orangemid + hueras * yellowmid;
+  } else if (closesthue == 3) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * greenyellowmid + hueras * greenmid : (1 - hueras) * yellowmid + hueras * greenyellowmid;
+  }  else if (closesthue == 4) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * greenmid + hueras * greencyanmid : (1 - hueras) * greenyellowmid + hueras * greenmid;
+  }  else if (closesthue == 5) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * greencyanmid + hueras * cyanmid : (1 - hueras) * greenmid + hueras * greencyanmid;
+  }  else if (closesthue == 6) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * cyanmid + hueras * bluecyanmid : (1 - hueras) * greencyanmid + hueras * cyanmid;
+  }  else if (closesthue == 7) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * bluecyanmid + hueras * bluemid : (1 - hueras) * cyanmid + hueras * bluecyanmid;
+  }  else if (closesthue == 8) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * bluemid + hueras * bluemagentamid : (1 - hueras) * bluecyanmid + hueras * bluemid;
+  }  else if (closesthue == 9) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * bluemagentamid + hueras * magentamid : (1 - hueras) * bluemid + hueras * bluemagentamid;
+  }  else if (closesthue == 10) {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * magentamid + hueras * redmagentamid : (1 - hueras) * bluemagentamid + hueras * magentamid;
+  }  else {
+    thissatmid = (hueras < 0.5) ? (1 - hueras) * redmagentamid + hueras * redmid : (1 - hueras) * magentamid + hueras * redmagentamid;
+  }
+
+  if (sat < 0.5) {
+    newsat = (0.5 - sat) * 2 * 0 + sat * 2 * thissatmid;
+  } else {
+    newsat = (1 - sat) * 2 * thissatmid + (sat - 0.5) * 2 * 1;
+  }
+  newlum = lum;
+  // compute RGB for the new HSL
+  // ref https://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+  if (newsat == 0) {
+    newr = newg = newb = newlum; // achromatic
+  } else {
+    q = newlum < 0.5 ? newlum * (1 + newsat) : newlum + newsat - newlum * newsat;
+    p = 2 * newlum - q;
+    thish = hue + 1.0 / 3;
+    if(thish < 0) thish += 1;
+    if(thish > 1) thish -= 1;
+    if(thish < 1.0 / 6) {
+      newr = p + (q - p) * 6 * thish;
+    } else if(thish < 1.0 / 2) {
+      newr = q;
+    } else if(thish < 2.0 / 3) {
+      newr = p + (q - p) * (2.0 / 3 - thish) * 6;
+    } else {
+      newr = p;
+    }
+
+    thish = hue;
+    if (thish < 0) thish += 1;
+    if (thish > 1) thish -= 1;
+    if (thish < 1.0 / 6) {
+      newg = p + (q - p) * 6 * thish;
+    } else if(thish < 1.0 / 2) {
+      newg = q;
+    } else if(thish < 2.0 / 3) {
+      newg = p + (q - p) * (2.0 / 3 - thish) * 6;
+    } else {
+      newg = p;
+    }
+
+    thish = hue - 1.0/3;
+    if(thish < 0) thish += 1;
+    if(thish > 1) thish -= 1;
+    if(thish < 1.0 / 6) {
+      newb = p + (q - p) * 6 * thish;
+    } else if(thish < 1.0 / 2) {
+      newb = q;
+    } else if(thish < 2.0 / 3) {
+      newb = p + (q - p) * (2.0 / 3 - thish) * 6;
+    } else {
+      newb = p;
+    }
+  }
+  // construct output
+  rescol4.r = newr;
+  rescol4.g = newg;
+  rescol4.b = newb;
+  rescol4.a = col4.a;
+  return premultiply(rescol4);
+}

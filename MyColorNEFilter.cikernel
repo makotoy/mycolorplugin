@@ -1,0 +1,148 @@
+/*
+A Core Image filter that changes saturation and lightness of colors in particular hue range.
+It can run as a non-executable filter.
+Input:
+  sampler image: source sampler
+  float huedeg6: float between 0.0 and 6.0, specifies the hue of colors to work on.
+  float hueran: float > 0, specifies the range of hue to work on.
+  float satmax: 1 >= float >= 0, max value for saturation (default 1.0)
+  float satpt1: 1 >= float >= 0, intermediate point 1 for saturation (default 0.666)
+  float satpt2: 1 >= float >= 0, intermediate point 2 for saturation (default 0.333)
+  float satmin: 1 >= float >= 0, min value for saturation (default 0.0)
+  float lummax: 1 >= float >= 0, max value for lightness (default 1.0)
+  float lumpt1: 1 >= float >= 0, intermediate point 1 for lightness (default 0.666)
+  float lumpt2: 1 >= float >= 0, intermediate point 2 for lightness (default 0.333)
+  float lummin: 1 >= float >= 0, min value for lightness (default 0.0)
+Output:
+  vec4: output color
+
+What it does:
+  When the input color is in the range ( huedeg6 * 60 +/- hueran * 360 ) degrees, we change saturation and lightness: if its hue matches huedeg6 * 60, we change the saturation (expressed as a float between 0.0 and 1.0) to fit within satmax and satmin.  We taper off the effect towards the range boundary, and the colors outside ofare unchanged. Lightness is transformed in a similar way.
+*/
+kernel vec4 coreImageKernel(sampler image, float huedeg6, float hueran, float satmax, float satpt1, float satpt2, float satmin, float lummax, float lumpt1, float lumpt2, float lummin)
+{
+  vec4 rescol4;
+  float huedeg, hue6, hue, segment, shift, lum, sat, lumdiff;
+  float thish, newsat, newlum, newr, newg, newb, p, q, huedev, satfac, lumfac;
+
+  // get source color
+  vec4 col4 = unpremultiply(sample(image, samplerCoord(image)));
+  float r = col4.r;
+  float g = col4.g;
+  float b = col4.b;
+
+  // compute chroma
+  float maxrgb = max(max(r, g), b);
+  float minrgb = min(min(r, g), b);
+  float c = maxrgb - minrgb;
+
+  // get HSL
+  // ref: https://stackoverflow.com/questions/39118528/rgb-to-hsl-conversion
+  if (c == 0) {
+  // if chroma is zero, do nothing and return
+    return premultiply(col4);
+  } else {
+    lum = (maxrgb + minrgb) / 2;
+    lumdiff = maxrgb - minrgb;
+    sat = lum > 0.5 ? lumdiff / (2 - maxrgb - minrgb) : lumdiff / (maxrgb + minrgb);
+    if (maxrgb == r) {
+      segment = (g - b) / c;
+      shift   = 0 / 60;
+      if (segment < 0) {
+        shift = 360 / 60;
+      }
+      hue6 = segment + shift;
+    } else if (maxrgb == g) {
+      segment = (b - r) / c;
+      shift   = 120 / 60;
+      hue6 = segment + shift;
+    } else {
+      segment = (r - g) / c;
+      shift   = 240 / 60;
+      hue6 = segment + shift;
+    }
+  }
+  hue = hue6 / 6; // hue value in range 0.0 - 1.0
+  huedeg = huedeg6 / 6;
+  // compute the deviation of hue between the input color and the target hue
+  huedev = min(min(abs(hue - huedeg),abs(hue - huedeg - 1)),abs(hue - huedeg + 1));
+  // if the input hue is outside the intended range, do nothing
+  if (huedev > hueran) {
+    return premultiply(col4);
+  }
+  // transform the saturation and lightness
+  float thissatmax = (1 - huedev / hueran) * satmax + huedev / hueran;
+  float thissatpt1 = (1 - huedev / hueran) * satpt1 + 0.666 * huedev / hueran;
+  float thissatpt2 = (1 - huedev / hueran) * satpt2 + 0.333 * huedev / hueran;
+  float thissatmin = (1 - huedev / hueran) * satmin + 0 * huedev / hueran;
+  float thislummax = (1 - huedev / hueran) * lummax + huedev / hueran;
+  float thislumpt1 = (1 - huedev / hueran) * lumpt1 + 0.666 * huedev / hueran;
+  float thislumpt2 = (1 - huedev / hueran) * lumpt2 + 0.333 * huedev / hueran;
+  float thislummin = (1 - huedev / hueran) * lummin + 0 * huedev / hueran;
+  if (sat < 0.333) {
+    newsat = (0.333 - sat) * 3 * thissatmin + sat * 3 * thissatpt2;
+  } else if (sat < 0.666) {
+    newsat = (0.666 - sat) * 3 * thissatpt2 + (sat - 0.333) * 3 * thissatpt1;
+  } else {
+    newsat = (1 - sat) * 3 * thissatpt1 + (sat - 0.666) * 3 * thissatmax;
+  }
+  if (lum < 0.333) {
+    newlum = (0.333 - lum) * 3 * thislummin + lum * 3 * thislumpt2;
+  } else if (lum < 0.666) {
+    newlum = (0.666 - lum) * 3 * thislumpt2 + (lum - 0.333) * 3 * thislumpt1;
+  } else {
+    newlum = (1 - lum) * 3 * thislumpt1 + (lum - 0.666) * 3 * thislummax;
+  }
+  // compute RGB for the new HSL
+  // ref https://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+  if (newsat == 0) {
+    newr = newg = newb = newlum; // achromatic
+  } else {
+    q = newlum < 0.5 ? newlum * (1 + newsat) : newlum + newsat - newlum * newsat;
+    p = 2 * newlum - q;
+    thish = hue + 1.0 / 3;
+    if(thish < 0) thish += 1;
+    if(thish > 1) thish -= 1;
+    if(thish < 1.0 / 6) {
+      newr = p + (q - p) * 6 * thish;
+    } else if(thish < 1.0 / 2) {
+      newr = q;
+    } else if(thish < 2.0 / 3) {
+      newr = p + (q - p) * (2.0 / 3 - thish) * 6;
+    } else {
+      newr = p;
+    }
+
+    thish = hue;
+    if (thish < 0) thish += 1;
+    if (thish > 1) thish -= 1;
+    if (thish < 1.0 / 6) {
+      newg = p + (q - p) * 6 * thish;
+    } else if(thish < 1.0 / 2) {
+      newg = q;
+    } else if(thish < 2.0 / 3) {
+      newg = p + (q - p) * (2.0 / 3 - thish) * 6;
+    } else {
+      newg = p;
+    }
+
+    thish = hue - 1.0/3;
+    if(thish < 0) thish += 1;
+    if(thish > 1) thish -= 1;
+    if(thish < 1.0 / 6) {
+      newb = p + (q - p) * 6 * thish;
+    } else if(thish < 1.0 / 2) {
+      newb = q;
+    } else if(thish < 2.0 / 3) {
+      newb = p + (q - p) * (2.0 / 3 - thish) * 6;
+    } else {
+      newb = p;
+    }
+  }
+  // construct output
+  rescol4.r = newr;
+  rescol4.g = newg;
+  rescol4.b = newb;
+  rescol4.a = col4.a;
+  return premultiply(rescol4);
+}
