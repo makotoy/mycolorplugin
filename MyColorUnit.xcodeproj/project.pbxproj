@@ -10,10 +10,10 @@
 		018396D90662C2C00004726E /* MyColorPlugInLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 018396D70662C2C00004726E /* MyColorPlugInLoader.h */; };
 		018396DA0662C2C00004726E /* MyColorPlugInLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 018396D80662C2C00004726E /* MyColorPlugInLoader.m */; };
 		01A864A8066FDF20005BB3E4 /* MyColorNEFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 01A864A7066FDF20005BB3E4 /* MyColorNEFilter.cikernel */; };
-		01B0FC76071E0059006B65B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01B0FC75071E0059006B65B6 /* Foundation.framework */; };
 		01EF2744065982E90035FD02 /* Description.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01EF2743065982E90035FD02 /* Description.plist */; };
 		01EF28860659A5DC0035FD02 /* Description.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01EF28850659A5DC0035FD02 /* Description.strings */; };
-		085FCB3327D891DC007139C6 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 085FCB3127D891CF007139C6 /* CoreImage.framework */; };
+		08C33F6E27D8AA2200061A9C /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08C33F6927D8A9E800061A9C /* CoreImage.framework */; };
+		08C33F7027D8AAC000061A9C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08C33F6F27D8AAC000061A9C /* Foundation.framework */; };
 		08E9457227D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 08E9457127D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel */; };
 		08E9457427D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 08E9457327D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
@@ -23,11 +23,11 @@
 		018396D70662C2C00004726E /* MyColorPlugInLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyColorPlugInLoader.h; sourceTree = "<group>"; };
 		018396D80662C2C00004726E /* MyColorPlugInLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyColorPlugInLoader.m; sourceTree = "<group>"; };
 		01A864A7066FDF20005BB3E4 /* MyColorNEFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MyColorNEFilter.cikernel; sourceTree = "<group>"; };
-		01B0FC75071E0059006B65B6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		01EF2743065982E90035FD02 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
 		01EF28710659A5A50035FD02 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Description.strings; sourceTree = "<group>"; };
-		085FCB3127D891CF007139C6 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		08C33F6927D8A9E800061A9C /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		08C33F6F27D8AAC000061A9C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		08E9457127D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyColorNEFilter2.cikernel; sourceTree = "<group>"; };
 		08E9457327D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyColorNEFilter3.cikernel; sourceTree = "<group>"; };
 		8D576316048677EA00EA77CD /* MyColorUnit.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyColorUnit.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,8 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				085FCB3327D891DC007139C6 /* CoreImage.framework in Frameworks */,
-				01B0FC76071E0059006B65B6 /* Foundation.framework in Frameworks */,
+				08C33F7027D8AAC000061A9C /* Foundation.framework in Frameworks */,
+				08C33F6E27D8AA2200061A9C /* CoreImage.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +50,8 @@
 		085FCB3227D891DC007139C6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				08C33F6F27D8AAC000061A9C /* Foundation.framework */,
+				08C33F6927D8A9E800061A9C /* CoreImage.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -59,20 +61,10 @@
 			children = (
 				08FB77AFFE84173DC02AAC07 /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
-				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
-				19C28FB6FE9D52B211CA2CBB /* Products */,
 				085FCB3227D891DC007139C6 /* Frameworks */,
+				19C28FB6FE9D52B211CA2CBB /* Products */,
 			);
 			name = CIDemoFilterPlugin;
-			sourceTree = "<group>";
-		};
-		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				01B0FC75071E0059006B65B6 /* Foundation.framework */,
-				085FCB3127D891CF007139C6 /* CoreImage.framework */,
-			);
-			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
 		};
 		089C167CFE841241C02AAC07 /* Resources */ = {
@@ -284,7 +276,6 @@
 		01E2165D09EDACA200E66AF8 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 			};
 			name = Deployment;
 		};
