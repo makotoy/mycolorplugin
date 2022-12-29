@@ -1,5 +1,5 @@
 /*
-A Core Image filter that changes saturation and lightness of colors in particular hue range.
+A Core Image filter that changes alpha of each pixel according to its lum value.
 It can run as a non-executable filter.
 Input:
   sampler image: source sampler
