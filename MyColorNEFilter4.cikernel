@@ -1,0 +1,45 @@
+/*
+A Core Image filter that changes saturation and lightness of colors in particular hue range.
+It can run as a non-executable filter.
+Input:
+  sampler image: source sampler
+  float alpatlum0: alpha at lum 0 (darkest)
+  float alpatlumhlf: alpha at lum 1/2 (intermediate)
+  float alpatlum1: alpha at lum 1 (brightest)
+Output:
+  vec4: output color
+
+What it does:
+  When the input color is in the range ( huedeg6 * 60 +/- hueran * 360 ) degrees, we change saturation and lightness: if its hue matches huedeg6 * 60, we change the saturation (expressed as a float between 0.0 and 1.0) to fit within satmax and satmin.  We taper off the effect towards the range boundary, and the colors outside ofare unchanged. Lightness is transformed in a similar way.
+*/
+kernel vec4 coreImageKernel(sampler image, float alpatlum0, float alpatlumhlf, float alpatlum1)
+{
+  vec4 rescol4;
+  float huedeg, hue6, hue, segment, shift, lum, sat, lumdiff;
+  float coef0, coef1;
+
+  // get source color
+  vec4 col4 = unpremultiply(sample(image, samplerCoord(image)));
+  float r = col4.r;
+  float g = col4.g;
+  float b = col4.b;
+
+  // compute chroma
+  float maxrgb = max(max(r, g), b);
+  float minrgb = min(min(r, g), b);
+
+  // get Lum
+  // ref: https://stackoverflow.com/questions/39118528/rgb-to-hsl-conversion
+    lum = (maxrgb + minrgb) / 2;
+
+  // compute transform coefficients; c0 + c1 * 0 = alpatlum0, c0 + c1 * 1  = alpatlum1
+  coef0 = alpatlum0;
+  coef1 = alpatlum1 - coef0;
+  
+  // construct output
+  rescol4.r = col4.r;
+  rescol4.g = col4.g;
+  rescol4.b = col4.b;
+  rescol4.a = coef0 + coef1 * lum;
+  return premultiply(rescol4);
+}

@@ -931,6 +931,115 @@
 			<key>CIKernelFile</key>
 			<string>MyColorNEFilter3</string>
 		</dict>
+		<key>MyColorNEFilter4</key>
+		<dict>
+			<key>CIFilterAttributes</key>
+			<dict>
+				<key>CIAttributeFilterCategories</key>
+				<array>
+					<string>CICategoryColorAdjustment</string>
+					<string>CICategoryVideo</string>
+					<string>CICategoryStillImage</string>
+				</array>
+				<key>CIAttributeFilterDisplayName</key>
+				<string>MyColorNEFilter4DispName</string>
+				<key>CIAttributeDescription</key>
+				<string>MyColorNEFilter4Desc</string>
+				<key>CIInputs</key>
+				<array>
+					<dict>
+						<key>CIAttributeDescription</key>
+						<string>Input image</string>
+						<key>CIAttributeClass</key>
+						<string>CIImage</string>
+						<key>CIAttributeDisplayName</key>
+						<string>Image</string>
+						<key>CIAttributeType</key>
+						<string>CIAttributeTypeImage</string>
+						<key>CIAttributeName</key>
+						<string>inputImage</string>
+					</dict>
+					<dict>
+						<key>CIAttributeDescription</key>
+						<string>Alpha at Lum 0</string>
+						<key>CIAttributeType</key>
+						<string>CIAttributeTypeScalar</string>
+						<key>CIAttributeClass</key>
+						<string>NSNumber</string>
+						<key>CIAttributeDefault</key>
+						<integer>1</integer>
+						<key>CIAttributeDisplayName</key>
+						<string>AlphaAtLum0</string>
+						<key>CIAttributeIdentity</key>
+						<integer>1</integer>
+						<key>CIAttributeMin</key>
+						<integer>0</integer>
+						<key>CIAttributeMax</key>
+						<integer>1</integer>
+						<key>CIAttributeName</key>
+						<string>alpatlum0</string>
+						<key>CIAttributeSliderMax</key>
+						<real>1</real>
+						<key>CIAttributeSliderMin</key>
+						<real>0</real>
+					</dict>
+					<dict>
+						<key>CIAttributeDescription</key>
+						<string>Alpha at Lum 0.5</string>
+						<key>CIAttributeType</key>
+						<string>CIAttributeTypeScalar</string>
+						<key>CIAttributeClass</key>
+						<string>NSNumber</string>
+						<key>CIAttributeDefault</key>
+						<integer>1</integer>
+						<key>CIAttributeDisplayName</key>
+						<string>AlphaAtLumHlf</string>
+						<key>CIAttributeIdentity</key>
+						<integer>1</integer>
+						<key>CIAttributeMin</key>
+						<integer>0</integer>
+						<key>CIAttributeMax</key>
+						<integer>1</integer>
+						<key>CIAttributeName</key>
+						<string>alpatlumhlf</string>
+						<key>CIAttributeSliderMax</key>
+						<real>1</real>
+						<key>CIAttributeSliderMin</key>
+						<real>0</real>
+					</dict>
+					<dict>
+						<key>CIAttributeDescription</key>
+						<string>Alpha at Lum 1</string>
+						<key>CIAttributeType</key>
+						<string>CIAttributeTypeScalar</string>
+						<key>CIAttributeClass</key>
+						<string>NSNumber</string>
+						<key>CIAttributeDefault</key>
+						<integer>1</integer>
+						<key>CIAttributeDisplayName</key>
+						<string>AlphaAtLum1</string>
+						<key>CIAttributeIdentity</key>
+						<integer>1</integer>
+						<key>CIAttributeMin</key>
+						<integer>0</integer>
+						<key>CIAttributeMax</key>
+						<integer>1</integer>
+						<key>CIAttributeName</key>
+						<string>alpatlum1</string>
+						<key>CIAttributeSliderMax</key>
+						<real>1</real>
+						<key>CIAttributeSliderMin</key>
+						<real>0</real>
+					</dict>
+				</array>
+			</dict>
+			<key>CIFilterClass</key>
+			<string>MyColorNEFilter4</string>
+			<key>CIHasCustomInterface</key>
+			<false/>
+			<key>CIKernelFile</key>
+			<string>MyColorNEFilter4</string>
+		</dict>
 	</dict>
 	<key>CIPlugInVersion</key>
 	<integer>1</integer>
