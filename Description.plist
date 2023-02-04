@@ -281,7 +281,7 @@
 			<key>CIKernelFile</key>
 			<string>MyColorNEFilter</string>
 		</dict>
-		<key>MyColorNEFilter2</key>
+		<key>MyColorFilterSatFor12Hues</key>
 		<dict>
 			<key>CIFilterAttributes</key>
 			<dict>
@@ -292,9 +292,9 @@
 					<string>CICategoryStillImage</string>
 				</array>
 				<key>CIAttributeFilterDisplayName</key>
-				<string>MyColorNEFilter2DispName</string>
+				<string>MyColorFilterSatFor12HuesDispName</string>
 				<key>CIAttributeDescription</key>
-				<string>MyColorNEFilter2Desc</string>
+				<string>MyColorFilterSatFor12HuesDesc</string>
 				<key>CIInputs</key>
 				<array>
 					<dict>
@@ -600,13 +600,13 @@
 				</array>
 			</dict>
 			<key>CIFilterClass</key>
-			<string>MyColorNEFilter2</string>
+			<string>MyColorFilterSatFor12Hues</string>
 			<key>CIHasCustomInterface</key>
 			<false/>
 			<key>CIKernelFile</key>
-			<string>MyColorNEFilter2</string>
+			<string>MyColorFilterSatFor12Hues</string>
 		</dict>
-		<key>MyColorNEFilter3</key>
+		<key>MyColorFilterLumFor12Hues</key>
 		<dict>
 			<key>CIFilterAttributes</key>
 			<dict>
@@ -617,9 +617,9 @@
 					<string>CICategoryStillImage</string>
 				</array>
 				<key>CIAttributeFilterDisplayName</key>
-				<string>MyColorNEFilter3DispName</string>
+				<string>MyColorFilterLumFor12HuesDispName</string>
 				<key>CIAttributeDescription</key>
-				<string>MyColorNEFilter3Desc</string>
+				<string>MyColorFilterLumFor12HuesDesc</string>
 				<key>CIInputs</key>
 				<array>
 					<dict>
@@ -925,13 +925,13 @@
 				</array>
 			</dict>
 			<key>CIFilterClass</key>
-			<string>MyColorNEFilter3</string>
+			<string>MyColorFilterLumFor12Hues</string>
 			<key>CIHasCustomInterface</key>
 			<false/>
 			<key>CIKernelFile</key>
-			<string>MyColorNEFilter3</string>
+			<string>MyColorFilterLumFor12Hues</string>
 		</dict>
-		<key>MyColorNEFilter4</key>
+		<key>MyColorFilterAlphaForLum</key>
 		<dict>
 			<key>CIFilterAttributes</key>
 			<dict>
@@ -942,9 +942,9 @@
 					<string>CICategoryStillImage</string>
 				</array>
 				<key>CIAttributeFilterDisplayName</key>
-				<string>MyColorNEFilter4DispName</string>
+				<string>MyColorFilterAlphaForLumDispName</string>
 				<key>CIAttributeDescription</key>
-				<string>MyColorNEFilter4Desc</string>
+				<string>MyColorFilterAlphaForLumDesc</string>
 				<key>CIInputs</key>
 				<array>
 					<dict>
@@ -1034,11 +1034,11 @@
 				</array>
 			</dict>
 			<key>CIFilterClass</key>
-			<string>MyColorNEFilter4</string>
+			<string>MyColorFilterAlphaForLum</string>
 			<key>CIHasCustomInterface</key>
 			<false/>
 			<key>CIKernelFile</key>
-			<string>MyColorNEFilter4</string>
+			<string>MyColorFilterAlphaForLum</string>
 		</dict>
 	</dict>
 	<key>CIPlugInVersion</key>

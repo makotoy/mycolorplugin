@@ -10,20 +10,20 @@
 		01A864A8066FDF20005BB3E4 /* MyColorNEFilter.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 01A864A7066FDF20005BB3E4 /* MyColorNEFilter.cikernel */; };
 		01EF2744065982E90035FD02 /* Description.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01EF2743065982E90035FD02 /* Description.plist */; };
 		01EF28860659A5DC0035FD02 /* Description.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01EF28850659A5DC0035FD02 /* Description.strings */; };
-		0817977B295AB3BF00FD9D2F /* MyColorNEFilter4.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 0817977A295AB3BF00FD9D2F /* MyColorNEFilter4.cikernel */; };
-		08E9457227D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 08E9457127D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel */; };
-		08E9457427D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 08E9457327D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel */; };
+		0817977B295AB3BF00FD9D2F /* MyColorFilterAlphaForLum.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 0817977A295AB3BF00FD9D2F /* MyColorFilterAlphaForLum.cikernel */; };
+		08E9457227D5EC6B00BD84E8 /* MyColorFilterSatFor12Hues.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 08E9457127D5EC6B00BD84E8 /* MyColorFilterSatFor12Hues.cikernel */; };
+		08E9457427D5FE1E00BD84E8 /* MyColorFilterLumFor12Hues.cikernel in Resources */ = {isa = PBXBuildFile; fileRef = 08E9457327D5FE1E00BD84E8 /* MyColorFilterLumFor12Hues.cikernel */; };
 		8D5B49A804867FD3000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D5B49A704867FD3000E48DA /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		01A864A7066FDF20005BB3E4 /* MyColorNEFilter.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MyColorNEFilter.cikernel; sourceTree = "<group>"; };
 		01EF2743065982E90035FD02 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
-		0817977A295AB3BF00FD9D2F /* MyColorNEFilter4.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MyColorNEFilter4.cikernel; sourceTree = "<group>"; };
+		0817977A295AB3BF00FD9D2F /* MyColorFilterAlphaForLum.cikernel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MyColorFilterAlphaForLum.cikernel; sourceTree = "<group>"; };
 		088AED0027D8E0BD00C8A798 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Description.strings; sourceTree = "<group>"; };
 		088AED0127D8E0BD00C8A798 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		08E9457127D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyColorNEFilter2.cikernel; sourceTree = "<group>"; };
-		08E9457327D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyColorNEFilter3.cikernel; sourceTree = "<group>"; };
+		08E9457127D5EC6B00BD84E8 /* MyColorFilterSatFor12Hues.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyColorFilterSatFor12Hues.cikernel; sourceTree = "<group>"; };
+		08E9457327D5FE1E00BD84E8 /* MyColorFilterLumFor12Hues.cikernel */ = {isa = PBXFileReference; lastKnownFileType = text; path = MyColorFilterLumFor12Hues.cikernel; sourceTree = "<group>"; };
 		8D576316048677EA00EA77CD /* MyColorUnit.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyColorUnit.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -65,9 +65,9 @@
 				01EF2743065982E90035FD02 /* Description.plist */,
 				01EF28850659A5DC0035FD02 /* Description.strings */,
 				01A864A7066FDF20005BB3E4 /* MyColorNEFilter.cikernel */,
-				08E9457127D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel */,
-				08E9457327D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel */,
-				0817977A295AB3BF00FD9D2F /* MyColorNEFilter4.cikernel */,
+				08E9457127D5EC6B00BD84E8 /* MyColorFilterSatFor12Hues.cikernel */,
+				08E9457327D5FE1E00BD84E8 /* MyColorFilterLumFor12Hues.cikernel */,
+				0817977A295AB3BF00FD9D2F /* MyColorFilterAlphaForLum.cikernel */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -154,9 +154,9 @@
 				01EF2744065982E90035FD02 /* Description.plist in Resources */,
 				01EF28860659A5DC0035FD02 /* Description.strings in Resources */,
 				01A864A8066FDF20005BB3E4 /* MyColorNEFilter.cikernel in Resources */,
-				08E9457227D5EC6B00BD84E8 /* MyColorNEFilter2.cikernel in Resources */,
-				0817977B295AB3BF00FD9D2F /* MyColorNEFilter4.cikernel in Resources */,
-				08E9457427D5FE1E00BD84E8 /* MyColorNEFilter3.cikernel in Resources */,
+				08E9457227D5EC6B00BD84E8 /* MyColorFilterSatFor12Hues.cikernel in Resources */,
+				0817977B295AB3BF00FD9D2F /* MyColorFilterAlphaForLum.cikernel in Resources */,
+				08E9457427D5FE1E00BD84E8 /* MyColorFilterLumFor12Hues.cikernel in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
