@@ -14,7 +14,7 @@ kernel vec4 coreImageKernel(sampler image, float redmid, float orangemid, float 
 {
   vec4 rescol4;
   float huedeg, hue6, hue, segment, shift, lum, sat, lumdiff;
-  float thish, newsat, newlum, newr, newg, newb, p, q, huedev, satfac, lumfac;
+  float thish, newsat, newlum, newr, newg, newb, p, q;
 
   // get source color
   vec4 col4 = unpremultiply(sample(image, samplerCoord(image)));
@@ -55,49 +55,47 @@ kernel vec4 coreImageKernel(sampler image, float redmid, float orangemid, float 
   }
   float hue12 = hue6 * 2; // hue value in range 0.0 - 12.0
   hue = hue6 / 6;
-  float hueras = hue12 - floor(hue12);
-  float closesthue = floor(hue12);
-  if (hueras < 0.5) {
-    huedev = hueras / 12;
-  } else {
-    huedev = (1 - hueras) / 12;
-    closesthue = closesthue + 1;
-    if (closesthue == 12) closesthue = 0;
-  }
+  float huefloored = floor(hue12);
+  float hueras = hue12 - huefloored;
+
   // transform the lightness
   float thislummid;
-  if (closesthue == 0) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * redmid + hueras * orangemid : (1 - hueras) * redmagentamid + hueras * redmid;
-  } else if (closesthue == 1) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * orangemid + hueras * yellowmid : (1 - hueras) * redmid + hueras * orangemid;
-  } else if (closesthue == 2) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * yellowmid + hueras * greenyellowmid : (1 - hueras) * orangemid + hueras * yellowmid;
-  } else if (closesthue == 3) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * greenyellowmid + hueras * greenmid : (1 - hueras) * yellowmid + hueras * greenyellowmid;
-  }  else if (closesthue == 4) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * greenmid + hueras * greencyanmid : (1 - hueras) * greenyellowmid + hueras * greenmid;
-  }  else if (closesthue == 5) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * greencyanmid + hueras * cyanmid : (1 - hueras) * greenmid + hueras * greencyanmid;
-  }  else if (closesthue == 6) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * cyanmid + hueras * bluecyanmid : (1 - hueras) * greencyanmid + hueras * cyanmid;
-  }  else if (closesthue == 7) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * bluecyanmid + hueras * bluemid : (1 - hueras) * cyanmid + hueras * bluecyanmid;
-  }  else if (closesthue == 8) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * bluemid + hueras * bluemagentamid : (1 - hueras) * bluecyanmid + hueras * bluemid;
-  }  else if (closesthue == 9) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * bluemagentamid + hueras * magentamid : (1 - hueras) * bluemid + hueras * bluemagentamid;
-  }  else if (closesthue == 10) {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * magentamid + hueras * redmagentamid : (1 - hueras) * bluemagentamid + hueras * magentamid;
-  }  else {
-    thislummid = (hueras < 0.5) ? (1 - hueras) * redmagentamid + hueras * redmid : (1 - hueras) * magentamid + hueras * redmagentamid;
+  if (huefloored == 0) {
+    thislummid = (1 - hueras) * redmid + hueras * orangemid;
+  } else if (huefloored == 1) {
+    thislummid = (1 - hueras) * orangemid + hueras * yellowmid;
+  } else if (huefloored == 2) {
+    thislummid = (1 - hueras) * yellowmid + hueras * greenyellowmid;
+  } else if (huefloored == 3) {
+    thislummid = (1 - hueras) * greenyellowmid + hueras * greenmid;
+  } else if (huefloored == 4) {
+    thislummid = (1 - hueras) * greenmid + hueras * greencyanmid;
+  } else if (huefloored == 5) {
+    thislummid = (1 - hueras) * greencyanmid + hueras * cyanmid;
+  } else if (huefloored == 6) {
+    thislummid = (1 - hueras) * cyanmid + hueras * bluecyanmid;
+  } else if (huefloored == 7) {
+    thislummid = (1 - hueras) * bluecyanmid + hueras * bluemid;
+  } else if (huefloored == 8) {
+    thislummid = (1 - hueras) * bluemid + hueras * bluemagentamid;
+  } else if (huefloored == 9) {
+    thislummid = (1 - hueras) * bluemagentamid + hueras * magentamid;
+  } else if (huefloored == 10) {
+    thislummid = (1 - hueras) * magentamid + hueras * redmagentamid;
+  } else {
+    thislummid = (1 - hueras) * redmagentamid + hueras * redmid;
   }
+  float avglummid = (redmid + orangemid + yellowmid + greenyellowmid + greenmid + greencyanmid + cyanmid + bluecyanmid + bluemid + bluemagentamid + magentamid + redmagentamid) / 12;
+  float targetlummid = sat * thislummid + (1 - sat) * avglummid;
 
   if (lum < 0.5) {
-    newlum = (0.5 - lum) * 2 * 0 + lum * 2 * thislummid;
+    newlum = (0.5 - lum) * 2 * 0 + lum * 2 * targetlummid;
   } else {
-    newlum = (1 - lum) * 2 * thislummid + (lum - 0.5) * 2 * 1;
+    newlum = (1 - lum) * 2 * targetlummid + (lum - 0.5) * 2 * 1;
   }
+  // saturation is unchanged
   newsat = sat;
+  
   // compute RGB for the new HSL
   // ref https://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
   if (newsat == 0) {
